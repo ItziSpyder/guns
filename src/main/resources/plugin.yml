@@ -1,0 +1,16 @@
+name: Guns
+version: '${version}'
+main: io.github.itzispyder.guns.Guns
+api-version: '1.20'
+authors: [ImproperIssues]
+description: Guns
+
+permissions:
+  guns.commands.guns:
+    description: Permission to run /guns
+    default: op
+
+commands:
+  guns:
+    description: Edit guns and inspect info
+    permission: guns.commands.guns
