@@ -1,5 +1,6 @@
 package io.github.itzispyder.guns.firearms.scopes;
 
+import io.github.itzispyder.guns.firearms.scopes.types.SniperScope;
 import org.bukkit.entity.Player;
 
 import java.util.function.Function;

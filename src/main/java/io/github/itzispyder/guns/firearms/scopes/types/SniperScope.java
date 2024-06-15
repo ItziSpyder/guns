@@ -1,5 +1,6 @@
-package io.github.itzispyder.guns.firearms.scopes;
+package io.github.itzispyder.guns.firearms.scopes.types;
 
+import io.github.itzispyder.guns.firearms.scopes.Scope;
 import io.github.itzispyder.pdk.utils.raytracers.BlockDisplayRaytracer;
 import io.github.itzispyder.pdk.utils.raytracers.CustomDisplayRaytracer;
 import org.bukkit.Color;
