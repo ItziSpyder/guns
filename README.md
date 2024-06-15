@@ -7,6 +7,7 @@ Make anything into a gun, highly customizable!
 `/guns`
 
 ### Featuring Scopes:
+NO RESOURCE PACKS REQUIRED!!
 You can change the scopes of guns `/guns edit scopeType 'type'`
 <br>
 Sneak to activate the scopes!
