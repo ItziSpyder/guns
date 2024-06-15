@@ -21,6 +21,7 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ShootingManager {
 
@@ -77,12 +78,14 @@ public class ShootingManager {
         dir.add(new Vector(x, y, z));
 
         var hit = CustomDisplayRaytracer.trace(eye, dir, distance, 0.3, point -> {
+            AtomicBoolean target = new AtomicBoolean(false);
             point.getNearbyEntities(shooter, 5, true, 0.2, ent -> {
                 return ent instanceof LivingEntity && !ent.isDead() && !(ent instanceof ArmorStand);
             }).forEach(ent -> {
+                target.set(true);
                 damage((LivingEntity) ent, shooter, damage);
             });
-            return CustomDisplayRaytracer.hitAnythingExclude(shooter).test(point);
+            return CustomDisplayRaytracer.HIT_BLOCK.test(point) || target.get();
         });
         BlockDisplayRaytracer.trace(Material.WHITE_CONCRETE, eye, hit.getLoc(), 0.0069, 3);
         return hit;

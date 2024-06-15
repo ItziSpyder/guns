@@ -1,5 +1,6 @@
 package io.github.itzispyder.guns.firearms.scopes;
 
+import io.github.itzispyder.guns.firearms.scopes.types.AssaultScope;
 import io.github.itzispyder.guns.firearms.scopes.types.SniperScope;
 import org.bukkit.entity.Player;
 
@@ -8,7 +9,8 @@ import java.util.function.Function;
 public enum ScopeType {
 
     NONE(player -> null),
-    SNIPER(SniperScope::new);
+    SNIPER(SniperScope::new),
+    ASSAULT(AssaultScope::new);
 
     private final Function<Player, Scope> scopeSupplier;
 
