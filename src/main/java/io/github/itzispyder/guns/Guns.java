@@ -5,12 +5,14 @@ import io.github.itzispyder.guns.data.PersistentData;
 import io.github.itzispyder.guns.events.PlayerEventListener;
 import io.github.itzispyder.guns.firearms.GunNBT;
 import io.github.itzispyder.guns.firearms.GunPresets;
+import io.github.itzispyder.guns.firearms.ShootingManager;
 import io.github.itzispyder.guns.firearms.presets.PistolNBT;
 import io.github.itzispyder.guns.firearms.presets.ShotgunNBT;
 import io.github.itzispyder.guns.firearms.presets.SmgNBT;
 import io.github.itzispyder.guns.firearms.presets.SniperNBT;
 import io.github.itzispyder.pdk.PDK;
 import io.github.itzispyder.pdk.utils.misc.JsonSerializable;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +37,8 @@ public final class Guns extends JavaPlugin {
         new GunsCommand().register();
 
         new PlayerEventListener().register();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ShootingManager::onTick, 0, 1);
     }
 
     @Override

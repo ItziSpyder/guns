@@ -1,14 +1,21 @@
 package io.github.itzispyder.guns.firearms;
 
+import io.github.itzispyder.guns.Guns;
 import io.github.itzispyder.guns.firearms.scopes.Scope;
 import io.github.itzispyder.pdk.utils.misc.Randomizer;
 import io.github.itzispyder.pdk.utils.misc.SoundPlayer;
 import io.github.itzispyder.pdk.utils.raytracers.BlockDisplayRaytracer;
 import io.github.itzispyder.pdk.utils.raytracers.CustomDisplayRaytracer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -20,7 +27,39 @@ public class ShootingManager {
     public static final Map<UUID, Scope> scopeViewers = new HashMap<>();
 
     public static void onTick() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            UUID id = player.getUniqueId();
+            if (!player.isSneaking()) {
+                if (scopeViewers.containsKey(id)) {
+                    scopeViewers.get(id).kill();
+                    scopeViewers.remove(id);
+                }
+                continue;
+            }
 
+            ItemStack item = player.getInventory().getItemInMainHand();
+            if (item.getType().isAir() || item.getType().isEmpty())
+                continue;
+
+            GunNBT gun = Guns.getGun(item);
+            if (gun == null)
+                continue;
+            PotionEffect potion = new PotionEffect(PotionEffectType.SLOW, 2, gun.scopeSlownessAmplifier, false, false, false);
+            player.addPotionEffect(potion);
+
+            if (!gun.hasScope())
+                continue;
+            if (!scopeViewers.containsKey(id)) {
+                Scope scope = gun.scopeType.createScope(player);
+                scopeViewers.put(id, scope);
+            }
+
+            Scope scope = scopeViewers.get(id);
+            if (scope.getParts().isEmpty())
+                scope.spawn();
+            else
+                scope.tick();
+        }
     }
 
     public static CustomDisplayRaytracer.Point shoot(LivingEntity shooter, double distance, double damage) {
@@ -39,7 +78,7 @@ public class ShootingManager {
 
         var hit = CustomDisplayRaytracer.trace(eye, dir, distance, 0.3, point -> {
             point.getNearbyEntities(shooter, 5, true, 0.2, ent -> {
-                return ent instanceof LivingEntity && !ent.isDead();
+                return ent instanceof LivingEntity && !ent.isDead() && !(ent instanceof ArmorStand);
             }).forEach(ent -> {
                 damage((LivingEntity) ent, shooter, damage);
             });

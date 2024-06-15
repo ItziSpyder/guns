@@ -2,6 +2,7 @@ package io.github.itzispyder.guns.firearms;
 
 import io.github.itzispyder.guns.data.PersistentData;
 import io.github.itzispyder.guns.data.PersistentDataSerializable;
+import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import io.github.itzispyder.pdk.utils.MathUtils;
 import io.github.itzispyder.pdk.utils.SchedulerUtils;
 import io.github.itzispyder.pdk.utils.ServerUtils;
@@ -24,6 +25,9 @@ public class GunNBT implements PersistentDataSerializable {
     public Sound shootSound;
     public float shootSoundPitch, shootSoundVolume;
 
+    public ScopeType scopeType;
+    public int scopeSlownessAmplifier;
+
     public double maxUncertainty, distance, damage, sneakUncertaintyMultiplier;
     public int ammo, maxAmmo, reloadTicks, roundsPerShot, cooldownTicks, repetitionPeriod, repetitionIterations;
 
@@ -36,6 +40,9 @@ public class GunNBT implements PersistentDataSerializable {
         distance = 32;
         damage = 4;
         sneakUncertaintyMultiplier = 0.5;
+
+        scopeType = ScopeType.NONE;
+        scopeSlownessAmplifier = 5;
 
         ammo = 10;
         maxAmmo = 10;
@@ -125,6 +132,10 @@ public class GunNBT implements PersistentDataSerializable {
             sound.playWithin(5);
             SchedulerUtils.later(5, () -> sound.playWithin(5));
         });
+    }
+
+    public boolean hasScope() {
+        return scopeType != null && scopeType != ScopeType.NONE;
     }
 
     public void sendActionBar(Player player) {

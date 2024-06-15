@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.itzispyder.guns.Guns;
 import io.github.itzispyder.guns.firearms.GunNBT;
+import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import io.github.itzispyder.pdk.commands.Args;
 import io.github.itzispyder.pdk.commands.CommandRegistry;
 import io.github.itzispyder.pdk.commands.CustomCommand;
@@ -148,6 +149,15 @@ public class GunsCommand implements CustomCommand {
                     failed = false;
                 }
 
+                case "scopeType" -> {
+                    gun.scopeType = args.get(2).toEnum(ScopeType.class, gun.scopeType);
+                    failed = false;
+                }
+                case "scopeSlownessAmplifier" -> {
+                    gun.scopeSlownessAmplifier = args.get(2).toInt();
+                    failed = false;
+                }
+
                 case "maxUncertainty" -> {
                     gun.maxUncertainty = args.get(2).toDouble();
                     failed = false;
@@ -230,6 +240,9 @@ public class GunsCommand implements CustomCommand {
                 .then(b.arg("cooldownTicks"))
                 .then(b.arg("repetitionIterations"))
                 .then(b.arg("repetitionPeriod"))
+                .then(b.arg("scopeType")
+                        .then(b.arg(Guns.enumNames(ScopeType.class))))
+                .then(b.arg("scopeSlownessAmplifier"))
                 .then(b.arg("sneakUncertaintyMultiplier"))
                 .then(b.arg("roundsPerShot")));
     }
