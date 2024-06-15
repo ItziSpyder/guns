@@ -31,10 +31,10 @@ public class SpreadScope extends Scope {
         ArmorStand base;
         BlockDisplay part;
 
-        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v3 = rotVec(center.clone().add(0, radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        var v4 = rotVec(center.clone().add(0, -radius / 2, 0).toVector(), 0, -yaw, center.toVector());
+        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v3 = rotVec(center.clone().add(0, radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        var v4 = rotVec(center.clone().add(0, -radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
 
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.RED_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.0005, stay));
@@ -49,10 +49,10 @@ public class SpreadScope extends Scope {
         base.addPassenger(part);
 
 
-        v1 = rotVec(center.clone().add(radius / 2, -radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius / 2, -radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        v3 = rotVec(center.clone().add(radius / 2, radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        v4 = rotVec(center.clone().add(-radius / 2, radius / 2, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(radius / 2, -radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius / 2, -radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        v3 = rotVec(center.clone().add(radius / 2, radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        v4 = rotVec(center.clone().add(-radius / 2, radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.006, stay));
         base.addPassenger(part);
@@ -60,10 +60,10 @@ public class SpreadScope extends Scope {
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v3, w), toLoc(v4, w), 0.006, stay));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(-radius, radius / 4, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius, -radius / 4, 0).toVector(), 0, -yaw, center.toVector());
-        v3 = rotVec(center.clone().add(radius, radius / 4, 0).toVector(), 0, -yaw, center.toVector());
-        v4 = rotVec(center.clone().add(radius, -radius / 4, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(-radius, radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius, -radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
+        v3 = rotVec(center.clone().add(radius, radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
+        v4 = rotVec(center.clone().add(radius, -radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.006, stay));
         base.addPassenger(part);
@@ -72,34 +72,34 @@ public class SpreadScope extends Scope {
         base.addPassenger(part);
 
 
-        v1 = rotVec(center.clone().add(-radius * 0.5, -radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius, -radius * 0.2, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(-radius * 0.5, -radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius, -radius * 0.2, 0).toVector(), pitch, -yaw, center.toVector());
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.006, stay));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(radius * 0.5, -radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(radius, -radius * 0.2, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(radius * 0.5, -radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(radius, -radius * 0.2, 0).toVector(), pitch, -yaw, center.toVector());
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.006, stay));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(-radius * 0.5, radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius, radius * 0.25, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(-radius * 0.5, radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius, radius * 0.25, 0).toVector(), pitch, -yaw, center.toVector());
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.006, stay));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(radius * 0.5, radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(radius, radius * 0.25, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(radius * 0.5, radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(radius, radius * 0.25, 0).toVector(), pitch, -yaw, center.toVector());
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.006, stay));
         base.addPassenger(part);
 
 
         for (int i = 1; i <= 5; i++) {
-            v1 = rotVec(center.clone().add(0.02, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
-            v2 = rotVec(center.clone().add(-0.02, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
+            v1 = rotVec(center.clone().add(0.02, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
+            v2 = rotVec(center.clone().add(-0.02, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
             base = newPartBase(toLoc(v1, w));
             part = addPart(BlockDisplayRaytracer.trace(Material.RED_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.0005, stay));
             part.setGlowColorOverride(Color.RED);
@@ -118,8 +118,8 @@ public class SpreadScope extends Scope {
             float y2 = (float)(center.getY() + Math.sin(angle2) * radius * 0.35);
             float z = (float)center.getZ();
 
-            v1 = rotVec(new Vector(x1, y1, z), 0, -yaw, center.toVector());
-            v2 = rotVec(new Vector(x2, y2, z), 0, -yaw, center.toVector());
+            v1 = rotVec(new Vector(x1, y1, z), pitch, -yaw, center.toVector());
+            v2 = rotVec(new Vector(x2, y2, z), pitch, -yaw, center.toVector());
             base = newPartBase(toLoc(v1, w));
             part = addPart(BlockDisplayRaytracer.trace(Material.RED_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.0005, stay));
             part.setGlowColorOverride(Color.RED);
@@ -138,8 +138,8 @@ public class SpreadScope extends Scope {
             float y2 = (float)(center.getY() + Math.sin(angle2) * radius * 0.4);
             float z = (float)center.getZ();
 
-            v1 = rotVec(new Vector(x1, y1, z), 0, -yaw, center.toVector());
-            v2 = rotVec(new Vector(x2, y2, z), 0, -yaw, center.toVector());
+            v1 = rotVec(new Vector(x1, y1, z), pitch, -yaw, center.toVector());
+            v2 = rotVec(new Vector(x2, y2, z), pitch, -yaw, center.toVector());
             base = newPartBase(toLoc(v1, w));
             part = addPart(BlockDisplayRaytracer.trace(Material.RED_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.0005, stay));
             part.setGlowColorOverride(Color.RED);
@@ -163,10 +163,10 @@ public class SpreadScope extends Scope {
         var center = CustomDisplayRaytracer.blocksInFrontOf(loc, dir, 0.25, true).getLoc();
         Entity base, part;
 
-        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v3 = rotVec(center.clone().add(0, radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        var v4 = rotVec(center.clone().add(0, -radius / 2, 0).toVector(), 0, -yaw, center.toVector());
+        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v3 = rotVec(center.clone().add(0, radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        var v4 = rotVec(center.clone().add(0, -radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
 
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
@@ -183,10 +183,10 @@ public class SpreadScope extends Scope {
         base.addPassenger(part);
 
 
-        v1 = rotVec(center.clone().add(radius / 2, -radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius / 2, -radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        v3 = rotVec(center.clone().add(radius / 2, radius / 2, 0).toVector(), 0, -yaw, center.toVector());
-        v4 = rotVec(center.clone().add(-radius / 2, radius / 2, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(radius / 2, -radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius / 2, -radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        v3 = rotVec(center.clone().add(radius / 2, radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
+        v4 = rotVec(center.clone().add(-radius / 2, radius / 2, 0).toVector(), pitch, -yaw, center.toVector());
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
         base.teleport(toLoc(v1, w));
@@ -200,10 +200,10 @@ public class SpreadScope extends Scope {
         part.teleport(part.getLocation().setDirection(v4.subtract(v3)));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(-radius, radius / 4, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius, -radius / 4, 0).toVector(), 0, -yaw, center.toVector());
-        v3 = rotVec(center.clone().add(radius, radius / 4, 0).toVector(), 0, -yaw, center.toVector());
-        v4 = rotVec(center.clone().add(radius, -radius / 4, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(-radius, radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius, -radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
+        v3 = rotVec(center.clone().add(radius, radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
+        v4 = rotVec(center.clone().add(radius, -radius / 4, 0).toVector(), pitch, -yaw, center.toVector());
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
         base.teleport(toLoc(v1, w));
@@ -218,8 +218,8 @@ public class SpreadScope extends Scope {
         base.addPassenger(part);
 
 
-        v1 = rotVec(center.clone().add(-radius * 0.5, -radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius, -radius * 0.2, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(-radius * 0.5, -radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius, -radius * 0.2, 0).toVector(), pitch, -yaw, center.toVector());
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
         base.teleport(toLoc(v1, w));
@@ -227,8 +227,8 @@ public class SpreadScope extends Scope {
         part.teleport(part.getLocation().setDirection(v2.subtract(v1)));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(radius * 0.5, -radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(radius, -radius * 0.2, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(radius * 0.5, -radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(radius, -radius * 0.2, 0).toVector(), pitch, -yaw, center.toVector());
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
         base.teleport(toLoc(v1, w));
@@ -236,8 +236,8 @@ public class SpreadScope extends Scope {
         part.teleport(part.getLocation().setDirection(v2.subtract(v1)));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(-radius * 0.5, radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(-radius, radius * 0.25, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(-radius * 0.5, radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(-radius, radius * 0.25, 0).toVector(), pitch, -yaw, center.toVector());
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
         base.teleport(toLoc(v1, w));
@@ -245,8 +245,8 @@ public class SpreadScope extends Scope {
         part.teleport(part.getLocation().setDirection(v2.subtract(v1)));
         base.addPassenger(part);
 
-        v1 = rotVec(center.clone().add(radius * 0.5, radius * 0.5, 0).toVector(), 0, -yaw, center.toVector());
-        v2 = rotVec(center.clone().add(radius, radius * 0.25, 0).toVector(), 0, -yaw, center.toVector());
+        v1 = rotVec(center.clone().add(radius * 0.5, radius * 0.5, 0).toVector(), pitch, -yaw, center.toVector());
+        v2 = rotVec(center.clone().add(radius, radius * 0.25, 0).toVector(), pitch, -yaw, center.toVector());
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
         base.teleport(toLoc(v1, w));
@@ -256,8 +256,8 @@ public class SpreadScope extends Scope {
 
 
         for (int i = 1; i <= 5; i++) {
-            v1 = rotVec(center.clone().add(0.02, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
-            v2 = rotVec(center.clone().add(-0.02, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
+            v1 = rotVec(center.clone().add(0.02, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
+            v2 = rotVec(center.clone().add(-0.02, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
             base = parts.get(vectorIndex++);
             base.getPassengers().forEach(base::removePassenger);
             base.teleport(toLoc(v1, w));
@@ -277,8 +277,8 @@ public class SpreadScope extends Scope {
             float y2 = (float)(center.getY() + Math.sin(angle2) * radius * 0.35);
             float z = (float)center.getZ();
 
-            v1 = rotVec(new Vector(x1, y1, z), 0, -yaw, center.toVector());
-            v2 = rotVec(new Vector(x2, y2, z), 0, -yaw, center.toVector());
+            v1 = rotVec(new Vector(x1, y1, z), pitch, -yaw, center.toVector());
+            v2 = rotVec(new Vector(x2, y2, z), pitch, -yaw, center.toVector());
             base = parts.get(vectorIndex++);
             base.getPassengers().forEach(base::removePassenger);
             base.teleport(toLoc(v1, w));
@@ -298,8 +298,8 @@ public class SpreadScope extends Scope {
             float y2 = (float)(center.getY() + Math.sin(angle2) * radius * 0.4);
             float z = (float)center.getZ();
 
-            v1 = rotVec(new Vector(x1, y1, z), 0, -yaw, center.toVector());
-            v2 = rotVec(new Vector(x2, y2, z), 0, -yaw, center.toVector());
+            v1 = rotVec(new Vector(x1, y1, z), pitch, -yaw, center.toVector());
+            v2 = rotVec(new Vector(x2, y2, z), pitch, -yaw, center.toVector());
             base = parts.get(vectorIndex++);
             base.getPassengers().forEach(base::removePassenger);
             base.teleport(toLoc(v1, w));

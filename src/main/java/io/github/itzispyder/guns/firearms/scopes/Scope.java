@@ -1,13 +1,14 @@
 package io.github.itzispyder.guns.firearms.scopes;
 
 import io.github.itzispyder.guns.firearms.ShootingManager;
-import io.github.itzispyder.guns.utils.Rotations;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +67,14 @@ public abstract class Scope {
     }
 
     protected Vector rotVec(Vector vec, float pitch, float yaw, Vector origin) {
-        return Rotations.Vectors.XYZ.rotateVectorDegrees(
-                (float)vec.getX(), (float)vec.getY(), (float)vec.getZ(),
-                pitch, yaw, 0,
-                (float)origin.getX(), (float)origin.getY(), (float)origin.getZ()
-        );
+        float x = (float)Math.toRadians(pitch);
+        float y = (float)Math.toRadians(yaw);
+        Quaternionf rotationYaw = new Quaternionf().rotationX(x);
+        Quaternionf rotationPitch = new Quaternionf().rotationY(y);
+        Quaternionf rotation = rotationPitch.mul(rotationYaw);
+        Vector3f trans = vec.subtract(origin).toVector3f();
+
+        trans = rotation.transform(trans).add(origin.toVector3f());
+        return new Vector(trans.x, trans.y, trans.z);
     }
 }

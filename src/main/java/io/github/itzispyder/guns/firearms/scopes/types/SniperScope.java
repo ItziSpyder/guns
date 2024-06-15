@@ -31,10 +31,10 @@ public class SniperScope extends Scope {
         ArmorStand base;
         BlockDisplay part;
 
-        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v3 = rotVec(center.clone().add(0, radius, 0).toVector(), 0, -yaw, center.toVector());
-        var v4 = rotVec(center.clone().add(0, -radius, 0).toVector(), 0, -yaw, center.toVector());
+        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v3 = rotVec(center.clone().add(0, radius, 0).toVector(), pitch, -yaw, center.toVector());
+        var v4 = rotVec(center.clone().add(0, -radius, 0).toVector(), pitch, -yaw, center.toVector());
 
         base = newPartBase(toLoc(v1, w));
         part = addPart(BlockDisplayRaytracer.trace(Material.RED_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.0005, stay));
@@ -57,15 +57,15 @@ public class SniperScope extends Scope {
             float y2 = (float)(center.getY() + Math.sin(angle2) * radius);
             float z = (float)center.getZ();
 
-            v1 = rotVec(new Vector(x1, y1, z), 0, -yaw, center.toVector());
-            v2 = rotVec(new Vector(x2, y2, z), 0, -yaw, center.toVector());
+            v1 = rotVec(new Vector(x1, y1, z), pitch, -yaw, center.toVector());
+            v2 = rotVec(new Vector(x2, y2, z), pitch, -yaw, center.toVector());
             base = newPartBase(toLoc(v1, w));
             part = addPart(BlockDisplayRaytracer.trace(Material.GRAY_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.01, stay));
             base.addPassenger(part);
         }
         for (int i = 1; i <= 10; i++) {
-            v1 = rotVec(center.clone().add(0.022, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
-            v2 = rotVec(center.clone().add(-0.022, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
+            v1 = rotVec(center.clone().add(0.022, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
+            v2 = rotVec(center.clone().add(-0.022, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
             base = newPartBase(toLoc(v1, w));
             part = addPart(BlockDisplayRaytracer.trace(Material.RED_CONCRETE, toLoc(v1, w), toLoc(v2, w), 0.0005, stay));
             part.setGlowColorOverride(Color.RED);
@@ -88,10 +88,10 @@ public class SniperScope extends Scope {
         var center = CustomDisplayRaytracer.blocksInFrontOf(loc, dir, 0.25, true).getLoc();
         Entity base, part;
 
-        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), 0, -yaw, center.toVector());
-        var v3 = rotVec(center.clone().add(0, radius, 0).toVector(), 0, -yaw, center.toVector());
-        var v4 = rotVec(center.clone().add(0, -radius, 0).toVector(), 0, -yaw, center.toVector());
+        var v1 = rotVec(center.clone().add(radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v2 = rotVec(center.clone().add(-radius, 0, 0).toVector(), pitch, -yaw, center.toVector());
+        var v3 = rotVec(center.clone().add(0, radius, 0).toVector(), pitch, -yaw, center.toVector());
+        var v4 = rotVec(center.clone().add(0, -radius, 0).toVector(), pitch, -yaw, center.toVector());
 
         base = parts.get(vectorIndex++);
         base.getPassengers().forEach(base::removePassenger);
@@ -116,8 +116,8 @@ public class SniperScope extends Scope {
             float y2 = (float)(center.getY() + Math.sin(angle2) * radius);
             float z = (float)center.getZ();
 
-            v1 = rotVec(new Vector(x1, y1, z), 0, -yaw, center.toVector());
-            v2 = rotVec(new Vector(x2, y2, z), 0, -yaw, center.toVector());
+            v1 = rotVec(new Vector(x1, y1, z), pitch, -yaw, center.toVector());
+            v2 = rotVec(new Vector(x2, y2, z), pitch, -yaw, center.toVector());
             base = parts.get(vectorIndex++);
             base.getPassengers().forEach(base::removePassenger);
             base.teleport(toLoc(v1, w));
@@ -126,8 +126,8 @@ public class SniperScope extends Scope {
             base.addPassenger(part);
         }
         for (int i = 1; i <= 10; i++) {
-            v1 = rotVec(center.clone().add(0.022, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
-            v2 = rotVec(center.clone().add(-0.022, -(i * 0.01), 0).toVector(), 0, -yaw, center.toVector());
+            v1 = rotVec(center.clone().add(0.022, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
+            v2 = rotVec(center.clone().add(-0.022, -(i * 0.01), 0).toVector(), pitch, -yaw, center.toVector());
             base = parts.get(vectorIndex++);
             base.getPassengers().forEach(base::removePassenger);
             base.teleport(toLoc(v1, w));
