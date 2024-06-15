@@ -43,12 +43,7 @@ public class ShootingManager {
                 continue;
 
             GunNBT gun = Guns.getGun(item);
-            if (gun == null)
-                continue;
-            PotionEffect potion = new PotionEffect(PotionEffectType.SLOW, 2, gun.scopeSlownessAmplifier, false, false, false);
-            player.addPotionEffect(potion);
-
-            if (!gun.hasScope())
+            if (gun == null || !gun.hasScope())
                 continue;
             if (!scopeViewers.containsKey(id)) {
                 Scope scope = gun.scopeType.createScope(player);
@@ -60,6 +55,9 @@ public class ShootingManager {
                 scope.spawn();
             else
                 scope.tick();
+
+            PotionEffect potion = new PotionEffect(PotionEffectType.SLOW, 2, gun.scopeSlownessAmplifier, false, false, false);
+            player.addPotionEffect(potion);
         }
     }
 
