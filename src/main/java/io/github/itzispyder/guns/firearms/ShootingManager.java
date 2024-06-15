@@ -30,8 +30,10 @@ public class ShootingManager {
     public static void onTick() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             UUID id = player.getUniqueId();
+            boolean viewing = scopeViewers.containsKey(id);
+
             if (!player.isSneaking()) {
-                if (scopeViewers.containsKey(id)) {
+                if (viewing) {
                     scopeViewers.get(id).kill();
                     scopeViewers.remove(id);
                 }
@@ -43,9 +45,14 @@ public class ShootingManager {
                 continue;
 
             GunNBT gun = Guns.getGun(item);
-            if (gun == null || !gun.hasScope())
+            if (gun == null || !gun.hasScope() || (viewing && scopeViewers.get(id).getType() != gun.scopeType)) {
+                if (viewing) {
+                    scopeViewers.get(id).kill();
+                    scopeViewers.remove(id);
+                }
                 continue;
-            if (!scopeViewers.containsKey(id)) {
+            }
+            if (!viewing) {
                 Scope scope = gun.scopeType.createScope(player);
                 scopeViewers.put(id, scope);
             }

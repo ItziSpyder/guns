@@ -17,8 +17,10 @@ public abstract class Scope {
 
     protected final List<Entity> parts = new ArrayList<>();
     protected final Player owner;
+    protected final ScopeType type;
 
-    public Scope(Player owner) {
+    public Scope(ScopeType type, Player owner) {
+        this.type = type;
         this.owner = owner;
         ShootingManager.scopeViewers.put(owner.getUniqueId(), this);
     }
@@ -34,6 +36,10 @@ public abstract class Scope {
 
     public Player getOwner() {
         return owner;
+    }
+
+    public ScopeType getType() {
+        return type;
     }
 
     public List<Entity> getParts() {

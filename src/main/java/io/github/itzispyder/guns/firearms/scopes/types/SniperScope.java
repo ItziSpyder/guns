@@ -1,6 +1,7 @@
 package io.github.itzispyder.guns.firearms.scopes.types;
 
 import io.github.itzispyder.guns.firearms.scopes.Scope;
+import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import io.github.itzispyder.pdk.utils.raytracers.BlockDisplayRaytracer;
 import io.github.itzispyder.pdk.utils.raytracers.CustomDisplayRaytracer;
 import org.bukkit.Color;
@@ -14,7 +15,7 @@ import org.bukkit.util.Vector;
 public class SniperScope extends Scope {
 
     public SniperScope(Player owner) {
-        super(owner);
+        super(ScopeType.SNIPER, owner);
     }
 
     @Override
