@@ -71,14 +71,21 @@ public class GunsCommand implements CustomCommand {
         }
 
         if (args.match(0, "load")) {
-            if (!Guns.isGun(item)) {
-                error(sender, "This item is NOT a gun, please do /guns makegun");
+            if (item.getType().isAir()) {
+                error(sender, "Cannot make Air a gun");
                 return;
             }
             if (args.getSize() == 1) {
                 error(sender, "Please provide a name");
                 return;
             }
+
+            ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(color("&r" + StringUtils.capitalizeWords(args.getAll(1).toString())));
+            item.setItemMeta(meta);
+
+            if (!Guns.isGun(item))
+                Guns.makeGun(item);
 
             GunNBT gun = Guns.gunPresets.presets.get(args.get(1).toString());
             if (gun == null) {
