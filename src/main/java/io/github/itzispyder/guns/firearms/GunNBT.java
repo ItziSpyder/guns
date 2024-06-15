@@ -25,7 +25,7 @@ public class GunNBT implements PersistentDataSerializable {
     public float shootSoundPitch, shootSoundVolume;
 
     public double maxUncertainty, distance, damage, sneakUncertaintyMultiplier;
-    public int ammo, maxAmmo, reloadTicks, roundsPerShot, cooldownTicks;
+    public int ammo, maxAmmo, reloadTicks, roundsPerShot, cooldownTicks, repetitionPeriod, repetitionIterations;
 
     public GunNBT() {
         shootSound = Sound.ENTITY_FIREWORK_ROCKET_BLAST;
@@ -42,6 +42,8 @@ public class GunNBT implements PersistentDataSerializable {
         reloadTicks = 20;
         roundsPerShot = 1;
         cooldownTicks = 1;
+        repetitionPeriod = 3;
+        repetitionIterations = 1;
     }
 
     @SuppressWarnings("deprecation")
@@ -73,26 +75,32 @@ public class GunNBT implements PersistentDataSerializable {
             reload(player, item);
             return;
         }
-        player.setCooldown(item.getType(), cooldownTicks + 1);
-        ammo--;
-        updateItemMeta(item);
 
-        Location[] results = new Location[roundsPerShot];
-        double uncertainty = !player.isSneaking() ? maxUncertainty : maxUncertainty * sneakUncertaintyMultiplier;
-        for (int i = 0; i < roundsPerShot; i++) {
-            results[i] = ShootingManager.shoot(player, uncertainty, distance, damage).getLoc();
-        }
-        ShootingManager.playSound(player, shootSound, shootSoundVolume, shootSoundPitch, results);
-        sendActionBar(player);
+        SchedulerUtils.loop(repetitionPeriod, repetitionIterations, iteration -> {
+            if (ammo <= 0)
+                return;
 
-        player.getWorld().spawn(player.getLocation().add(0, 1, 0), Item.class, ent -> {
-            ent.setItemStack(new ItemStack(Material.IRON_NUGGET));
-            ent.setCanMobPickup(false);
-            ent.setCanPlayerPickup(false);
-            SchedulerUtils.later(15, () -> {
-                SoundPlayer sound = new SoundPlayer(ent.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5F, 2F);
-                sound.playWithin(2);
-                ent.remove();
+            player.setCooldown(item.getType(), cooldownTicks + 1);
+            ammo--;
+            updateItemMeta(item);
+
+            Location[] results = new Location[roundsPerShot];
+            double uncertainty = !player.isSneaking() ? maxUncertainty : maxUncertainty * sneakUncertaintyMultiplier;
+            for (int i = 0; i < roundsPerShot; i++) {
+                results[i] = ShootingManager.shoot(player, uncertainty, distance, damage).getLoc();
+            }
+            ShootingManager.playSound(player, shootSound, shootSoundVolume, shootSoundPitch, results);
+            sendActionBar(player);
+
+            player.getWorld().spawn(player.getLocation().add(0, 1, 0), Item.class, ent -> {
+                ent.setItemStack(new ItemStack(Material.IRON_NUGGET));
+                ent.setCanMobPickup(false);
+                ent.setCanPlayerPickup(false);
+                SchedulerUtils.later(15, () -> {
+                    SoundPlayer sound = new SoundPlayer(ent.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5F, 2F);
+                    sound.playWithin(2);
+                    ent.remove();
+                });
             });
         });
     }

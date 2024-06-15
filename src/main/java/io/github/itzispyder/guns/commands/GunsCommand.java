@@ -185,6 +185,14 @@ public class GunsCommand implements CustomCommand {
                     gun.cooldownTicks = args.get(2).toInt();
                     failed = false;
                 }
+                case "repetitionIterations" -> {
+                    gun.repetitionIterations = args.get(2).toInt();
+                    failed = false;
+                }
+                case "repetitionPeriod" -> {
+                    gun.repetitionPeriod = args.get(2).toInt();
+                    failed = false;
+                }
 
                 default -> error(sender, "Unknown gun property '%s'".formatted(args.get(1)));
             }
@@ -220,6 +228,8 @@ public class GunsCommand implements CustomCommand {
                 .then(b.arg("maxAmmo"))
                 .then(b.arg("reloadTicks"))
                 .then(b.arg("cooldownTicks"))
+                .then(b.arg("repetitionIterations"))
+                .then(b.arg("repetitionPeriod"))
                 .then(b.arg("sneakUncertaintyMultiplier"))
                 .then(b.arg("roundsPerShot")));
     }

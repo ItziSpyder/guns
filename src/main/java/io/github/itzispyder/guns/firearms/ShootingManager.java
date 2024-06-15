@@ -1,5 +1,6 @@
 package io.github.itzispyder.guns.firearms;
 
+import io.github.itzispyder.guns.firearms.scopes.Scope;
 import io.github.itzispyder.pdk.utils.misc.Randomizer;
 import io.github.itzispyder.pdk.utils.misc.SoundPlayer;
 import io.github.itzispyder.pdk.utils.raytracers.BlockDisplayRaytracer;
@@ -10,7 +11,17 @@ import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class ShootingManager {
+
+    public static final Map<UUID, Scope> scopeViewers = new HashMap<>();
+
+    public static void onTick() {
+
+    }
 
     public static CustomDisplayRaytracer.Point shoot(LivingEntity shooter, double distance, double damage) {
         return shoot(shooter, 0.0, distance, damage);
@@ -44,7 +55,7 @@ public class ShootingManager {
 
     public static void playSound(LivingEntity shooter, Sound shootSound, float shootVolume, float shootPitch, Location... hitResults) {
         SoundPlayer sp = new SoundPlayer(shooter.getEyeLocation(), shootSound, shootVolume, shootPitch);
-        sp.playWithin(10);
+        sp.playWithin(15);
 
         sp.setSound(Sound.ITEM_HOE_TILL);
         sp.setVolume(10F);
