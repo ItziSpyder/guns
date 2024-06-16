@@ -1,6 +1,7 @@
 package io.github.itzispyder.guns.firearms;
 
 import io.github.itzispyder.guns.Guns;
+import io.github.itzispyder.guns.commands.BlockCollisionsCommand;
 import io.github.itzispyder.guns.firearms.scopes.Scope;
 import io.github.itzispyder.pdk.utils.misc.Randomizer;
 import io.github.itzispyder.pdk.utils.misc.SoundPlayer;
@@ -90,7 +91,7 @@ public class ShootingManager {
                 target.set(true);
                 damage((LivingEntity) ent, shooter, damage);
             });
-            return CustomDisplayRaytracer.HIT_BLOCK.test(point) || target.get();
+            return target.get() || BlockCollisionsCommand.collidesWidth(point.getBlock(), point.getLoc());
         });
         BlockDisplayRaytracer.trace(Material.WHITE_CONCRETE, eye, hit.getLoc(), 0.0069, 3);
         return hit;

@@ -9,8 +9,14 @@ permissions:
   guns.commands.guns:
     description: Permission to run /guns
     default: op
+  guns.commands.blockcollisions:
+    description: Permission to check block collisions
+    default: op
 
 commands:
   guns:
     description: Edit guns and inspect info
     permission: guns.commands.guns
+  blockcollisions:
+    description: Check block collisions
+    permission: guns.commands.blockcollisions

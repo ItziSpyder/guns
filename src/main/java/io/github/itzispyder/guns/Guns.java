@@ -1,5 +1,6 @@
 package io.github.itzispyder.guns;
 
+import io.github.itzispyder.guns.commands.BlockCollisionsCommand;
 import io.github.itzispyder.guns.commands.GunsCommand;
 import io.github.itzispyder.guns.data.PersistentData;
 import io.github.itzispyder.guns.events.PlayerEventListener;
@@ -35,6 +36,7 @@ public final class Guns extends JavaPlugin {
         gunPresets.save();
 
         new GunsCommand().register();
+        new BlockCollisionsCommand().register();
 
         new PlayerEventListener().register();
 
