@@ -4,9 +4,9 @@ import io.github.itzispyder.guns.firearms.GunNBT;
 import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import org.bukkit.Sound;
 
-public class ShotgunNBT extends GunNBT {
+public class DoubleBarrelNBT extends GunNBT {
 
-    public ShotgunNBT() {
+    public DoubleBarrelNBT() {
         super();
 
         shootSound = Sound.ENTITY_IRON_GOLEM_REPAIR;
@@ -22,7 +22,8 @@ public class ShotgunNBT extends GunNBT {
 
         roundsPerShot = 15;
         cooldownTicks = 20;
-        reloadTicks = 60;
-        ammo = maxAmmo = 8;
+        reloadTicks = 20;
+        ammo = maxAmmo = 4;
+        repetitionIterations = 2;
     }
 }

@@ -4,9 +4,9 @@ import io.github.itzispyder.guns.firearms.GunNBT;
 import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import org.bukkit.Sound;
 
-public class SniperNBT extends GunNBT {
+public class RifleNBT extends GunNBT {
 
-    public SniperNBT() {
+    public RifleNBT() {
         super();
 
         shootSound = Sound.ENTITY_IRON_GOLEM_REPAIR;
@@ -17,11 +17,12 @@ public class SniperNBT extends GunNBT {
 
         maxUncertainty = 0.15;
         distance = 128;
-        damage = 18;
+        damage = 8;
         sneakUncertaintyMultiplier = 0.04628;
 
-        cooldownTicks = 20;
-        reloadTicks = 60;
-        ammo = maxAmmo = 10;
+        cooldownTicks = 15;
+        reloadTicks = 40;
+        ammo = maxAmmo = 6;
+        repetitionIterations = 2;
     }
 }

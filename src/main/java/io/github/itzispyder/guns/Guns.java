@@ -7,10 +7,7 @@ import io.github.itzispyder.guns.events.PlayerEventListener;
 import io.github.itzispyder.guns.firearms.GunNBT;
 import io.github.itzispyder.guns.firearms.GunPresets;
 import io.github.itzispyder.guns.firearms.ShootingManager;
-import io.github.itzispyder.guns.firearms.presets.PistolNBT;
-import io.github.itzispyder.guns.firearms.presets.ShotgunNBT;
-import io.github.itzispyder.guns.firearms.presets.SmgNBT;
-import io.github.itzispyder.guns.firearms.presets.SniperNBT;
+import io.github.itzispyder.guns.firearms.presets.*;
 import io.github.itzispyder.pdk.PDK;
 import io.github.itzispyder.pdk.utils.misc.JsonSerializable;
 import org.bukkit.Bukkit;
@@ -31,8 +28,11 @@ public final class Guns extends JavaPlugin {
         PDK.init(this);
         gunPresets.presets.put("pistol", new PistolNBT());
         gunPresets.presets.put("shotgun", new ShotgunNBT());
-        gunPresets.presets.put("rifle", new SniperNBT());
+        gunPresets.presets.put("sniper", new SniperNBT());
         gunPresets.presets.put("smg", new SmgNBT());
+        gunPresets.presets.put("double-barrel", new DoubleBarrelNBT());
+        gunPresets.presets.put("desert-eagle", new DesertEagleNBT());
+        gunPresets.presets.put("rifle", new RifleNBT());
         gunPresets.save();
 
         new GunsCommand().register();
