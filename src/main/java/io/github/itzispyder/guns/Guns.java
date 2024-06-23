@@ -9,7 +9,7 @@ import io.github.itzispyder.guns.firearms.GunPresets;
 import io.github.itzispyder.guns.firearms.ShootingManager;
 import io.github.itzispyder.guns.firearms.presets.*;
 import io.github.itzispyder.pdk.PDK;
-import io.github.itzispyder.pdk.utils.misc.JsonSerializable;
+import io.github.itzispyder.pdk.utils.misc.config.JsonSerializable;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
