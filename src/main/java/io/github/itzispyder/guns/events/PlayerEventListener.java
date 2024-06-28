@@ -1,7 +1,7 @@
 package io.github.itzispyder.guns.events;
 
 import io.github.itzispyder.guns.Guns;
-import io.github.itzispyder.guns.firearms.GunNBT;
+import io.github.itzispyder.guns.firearms.nbt.GunNBT;
 import io.github.itzispyder.pdk.events.CustomListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

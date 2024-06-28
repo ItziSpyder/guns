@@ -1,15 +1,15 @@
-package io.github.itzispyder.guns.firearms;
+package io.github.itzispyder.guns.firearms.nbt;
 
 import io.github.itzispyder.guns.data.PersistentData;
 import io.github.itzispyder.guns.data.PersistentDataSerializable;
+import io.github.itzispyder.guns.firearms.ShootingManager;
 import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import io.github.itzispyder.pdk.utils.MathUtils;
 import io.github.itzispyder.pdk.utils.SchedulerUtils;
 import io.github.itzispyder.pdk.utils.ServerUtils;
 import io.github.itzispyder.pdk.utils.misc.SoundPlayer;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import io.github.itzispyder.pdk.utils.raytracers.CustomDisplayRaytracer;
+import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -22,22 +22,30 @@ import java.util.List;
 // §
 public class GunNBT implements PersistentDataSerializable {
 
-    public Sound shootSound;
-    public float shootSoundPitch, shootSoundVolume;
+    public Event impact, fire;
+
+    public HitscanMode hitscan;
+    public BallisticsMode ballistics;
+    public RaycastMode raycastMode;
 
     public ScopeType scopeType;
     public int scopeSlownessAmplifier;
 
-    public double maxUncertainty, distance, damage, sneakUncertaintyMultiplier;
+    public double maxUncertainty, damage, sneakUncertaintyMultiplier;
     public int ammo, maxAmmo, reloadTicks, roundsPerShot, cooldownTicks, repetitionPeriod, repetitionIterations;
 
     public GunNBT() {
-        shootSound = Sound.ENTITY_FIREWORK_ROCKET_BLAST;
-        shootSoundVolume = 10F;
-        shootSoundPitch = 0.1F;
+        fire = new Event();
+        fire.sounds.add(new SoundInstance(Sound.ENTITY_FIREWORK_ROCKET_BLAST, 10F, 0.1F, 15));
+        impact = new Event();
+        impact.sounds.add(new SoundInstance(Sound.ITEM_HOE_TILL, 10F, 2F, 5));
+        impact.particles.add(new ParticleInstance(Particle.ELECTRIC_SPARK, 10, 0.0625, 0.0625, 0.0625, 1));
+
+        hitscan = new HitscanMode(32);
+        ballistics = new BallisticsMode(0, 2, true, Color.AQUA);
+        raycastMode = RaycastMode.HITSCAN;
 
         maxUncertainty = 0.069420;
-        distance = 32;
         damage = 4;
         sneakUncertaintyMultiplier = 0.5;
 
@@ -62,7 +70,12 @@ public class GunNBT implements PersistentDataSerializable {
         lore.add("§7§oLeft click to reload");
         lore.add("");
         lore.add("§7Ammo: §f%s/%s".formatted(ammo, maxAmmo));
-        lore.add("§7Range: §f%s".formatted(MathUtils.round(distance, 10)));
+
+        switch (raycastMode) {
+            case HITSCAN -> lore.add("§7Range: §f%s".formatted(MathUtils.round(hitscan.distance, 10)));
+            case BALLISTICS -> lore.add("§7Ammo Weight: §f%s".formatted(MathUtils.round(ballistics.bulletDropPerTick, 10)));
+        }
+
         lore.add("§7Damage: §f%s".formatted(MathUtils.round(damage, 10)));
         lore.add("§7Uncertainty: §f%s".formatted(MathUtils.round(maxUncertainty, 10)));
 
@@ -83,31 +96,41 @@ public class GunNBT implements PersistentDataSerializable {
             return;
         }
 
-        SchedulerUtils.loop(repetitionPeriod, repetitionIterations, iteration -> {
-            if (ammo <= 0)
-                return;
+        SchedulerUtils.loop(repetitionPeriod, repetitionIterations, iteration -> fire(player, item));
+    }
 
-            player.setCooldown(item.getType(), cooldownTicks + 1);
-            ammo--;
-            updateItemMeta(item);
+    private void fire(Player player, ItemStack item) {
+        if (ammo <= 0 || raycastMode == null)
+            return;
 
-            Location[] results = new Location[roundsPerShot];
-            double uncertainty = !player.isSneaking() ? maxUncertainty : maxUncertainty * sneakUncertaintyMultiplier;
-            for (int i = 0; i < roundsPerShot; i++) {
-                results[i] = ShootingManager.shoot(player, uncertainty, distance, damage).getLoc();
+        player.setCooldown(item.getType(), cooldownTicks + 1);
+        ammo--;
+        updateItemMeta(item);
+
+        Location[] results = new Location[roundsPerShot];
+        double uncertainty = !player.isSneaking() ? maxUncertainty : maxUncertainty * sneakUncertaintyMultiplier;
+        boolean instant = raycastMode.isInstant();
+
+        if (!instant)
+            fire.trigger(CustomDisplayRaytracer.blocksInFrontOf(player.getEyeLocation(), player.getLocation().getDirection(), 0.1, false).getLoc());
+        for (int i = 0; i < roundsPerShot; i++) {
+            switch (raycastMode) {
+                case HITSCAN -> results[i] = ShootingManager.shootHitscan(player, uncertainty, hitscan, damage).getLoc();
+                case BALLISTICS -> ShootingManager.shootBallistics(player, uncertainty, ballistics, damage, impact);
             }
-            ShootingManager.playSound(player, shootSound, shootSoundVolume, shootSoundPitch, results);
-            sendActionBar(player);
+        }
+        if (instant)
+            ShootingManager.playSound(player, fire, impact, results);
+        sendActionBar(player);
 
-            player.getWorld().spawn(player.getLocation().add(0, 1, 0), Item.class, ent -> {
-                ent.setItemStack(new ItemStack(Material.IRON_NUGGET));
-                ent.setCanMobPickup(false);
-                ent.setCanPlayerPickup(false);
-                SchedulerUtils.later(15, () -> {
-                    SoundPlayer sound = new SoundPlayer(ent.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5F, 2F);
-                    sound.playWithin(2);
-                    ent.remove();
-                });
+        player.getWorld().spawn(player.getLocation().add(0, 1, 0), Item.class, ent -> {
+            ent.setItemStack(new ItemStack(Material.IRON_NUGGET));
+            ent.setCanMobPickup(false);
+            ent.setCanPlayerPickup(false);
+            SchedulerUtils.later(15, () -> {
+                SoundPlayer sound = new SoundPlayer(ent.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5F, 2F);
+                sound.playWithin(2);
+                ent.remove();
             });
         });
     }

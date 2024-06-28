@@ -1,6 +1,6 @@
-package io.github.itzispyder.guns.firearms.presets;
+package io.github.itzispyder.guns.firearms.nbt.presets;
 
-import io.github.itzispyder.guns.firearms.GunNBT;
+import io.github.itzispyder.guns.firearms.nbt.GunNBT;
 import io.github.itzispyder.guns.firearms.scopes.ScopeType;
 import org.bukkit.Sound;
 
@@ -9,14 +9,14 @@ public class AssaultRifleNBT extends GunNBT {
     public AssaultRifleNBT() {
         super();
 
-        shootSound = Sound.ENTITY_FIREWORK_ROCKET_BLAST;
-        shootSoundPitch = 2F;
+        fire.sounds.get(0).sound = Sound.ENTITY_FIREWORK_ROCKET_BLAST;
+        fire.sounds.get(0).pitch = 2F;
 
         scopeType = ScopeType.ASSAULT;
         scopeSlownessAmplifier = 5;
 
         maxUncertainty = 0.1;
-        distance = 32;
+        hitscan.distance = 32;
         damage = 6;
         sneakUncertaintyMultiplier = 0.5;
 

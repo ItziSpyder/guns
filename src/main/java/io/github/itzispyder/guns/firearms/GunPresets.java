@@ -1,5 +1,6 @@
 package io.github.itzispyder.guns.firearms;
 
+import io.github.itzispyder.guns.firearms.nbt.GunNBT;
 import io.github.itzispyder.pdk.utils.misc.config.JsonSerializable;
 
 import java.io.File;

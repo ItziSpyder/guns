@@ -1,6 +1,6 @@
-package io.github.itzispyder.guns.firearms.presets;
+package io.github.itzispyder.guns.firearms.nbt.presets;
 
-import io.github.itzispyder.guns.firearms.GunNBT;
+import io.github.itzispyder.guns.firearms.nbt.GunNBT;
 import org.bukkit.Sound;
 
 public class DesertEagleNBT extends GunNBT {
@@ -8,11 +8,11 @@ public class DesertEagleNBT extends GunNBT {
     public DesertEagleNBT() {
         super();
 
-        shootSound = Sound.ENTITY_FIREWORK_ROCKET_BLAST;
-        shootSoundPitch = 0.1F;
+        fire.sounds.get(0).sound = Sound.ENTITY_FIREWORK_ROCKET_BLAST;
+        fire.sounds.get(0).pitch = 0.1F;
 
         maxUncertainty = 0.25;
-        distance = 16;
+        hitscan.distance = 16;
         damage = 6;
         sneakUncertaintyMultiplier = 0.5;
 
