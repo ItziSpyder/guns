@@ -30,6 +30,8 @@ public final class Guns extends JavaPlugin {
         gunPresets.presets.put("double-barrel", new DoubleBarrelNBT());
         gunPresets.presets.put("desert-eagle", new DesertEagleNBT());
         gunPresets.presets.put("rifle", new RifleNBT());
+        gunPresets.presets.put("blaster", new BlasterNBT());
+        gunPresets.presets.put("blaster-rifle", new BlasterRifleNBT());
         gunPresets.save();
 
         new GunsCommand().register();

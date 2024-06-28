@@ -147,7 +147,7 @@ public class ShootingManager {
         SchedulerUtils.later(3, () -> {
             Vector3f rescale = new Vector3f(thickness, thickness, 1);
             block.setInterpolationDelay(0);
-            block.setInterpolationDuration(3);
+            block.setInterpolationDuration(1);
             block.setTransformation(new Transformation(translation, angle, rescale, angle));
         });
 
