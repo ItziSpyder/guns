@@ -11,6 +11,7 @@ import io.github.itzispyder.pdk.commands.CustomCommand;
 import io.github.itzispyder.pdk.commands.completions.CompletionBuilder;
 import io.github.itzispyder.pdk.utils.StringUtils;
 import org.bukkit.Sound;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public class GunsCommand implements CustomCommand {
 
     @Override
     @SuppressWarnings("deprecation")
-    public void dispatchCommand(CommandSender sender, Args args) {
+    public void dispatchCommand(CommandSender sender, Command command, String s, Args args) {
         Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();
 
@@ -222,7 +223,7 @@ public class GunsCommand implements CustomCommand {
     }
 
     @Override
-    public void dispatchCompletions(CompletionBuilder b) {
+    public void dispatchCompletions(CommandSender sender, Command command, String s, CompletionBuilder b) {
         b.then(b.arg("makegun")
                 .then(b.arg(color("&8displayName"))));
 
@@ -235,22 +236,36 @@ public class GunsCommand implements CustomCommand {
 
         b.then(b.arg("edit")
                 .then(b.arg("shootSound")
-                        .then(b.arg(Guns.enumNames(Sound.class))))
-                .then(b.arg("shootSoundPitch"))
-                .then(b.arg("shootSoundVolume"))
-                .then(b.arg("maxUncertainty"))
-                .then(b.arg("distance"))
-                .then(b.arg("damage"))
-                .then(b.arg("ammo"))
-                .then(b.arg("maxAmmo"))
-                .then(b.arg("reloadTicks"))
-                .then(b.arg("cooldownTicks"))
-                .then(b.arg("repetitionIterations"))
-                .then(b.arg("repetitionPeriod"))
+                        .then(b.argEnum(Sound.class)))
+                .then(b.arg("shootSoundPitch")
+                        .then(b.argPosDecimal("pitch")))
+                .then(b.arg("shootSoundVolume")
+                        .then(b.argPosDecimal("volume")))
+                .then(b.arg("maxUncertainty")
+                        .then(b.argPosDecimal("uncertainty")))
+                .then(b.arg("distance")
+                        .then(b.argPosDecimal("blocks")))
+                .then(b.arg("damage")
+                        .then(b.argPosDecimal("health")))
+                .then(b.arg("ammo")
+                        .then(b.argPosInt("amount")))
+                .then(b.arg("maxAmmo")
+                        .then(b.argPosInt("amount")))
+                .then(b.arg("reloadTicks")
+                        .then(b.argPosInt("ticks")))
+                .then(b.arg("cooldownTicks")
+                        .then(b.argPosInt("ticks")))
+                .then(b.arg("repetitionIterations")
+                        .then(b.argPosInt("count")))
+                .then(b.arg("repetitionPeriod")
+                        .then(b.argPosInt("ticks")))
                 .then(b.arg("scopeType")
-                        .then(b.arg(Guns.enumNames(ScopeType.class))))
-                .then(b.arg("scopeSlownessAmplifier"))
-                .then(b.arg("sneakUncertaintyMultiplier"))
-                .then(b.arg("roundsPerShot")));
+                        .then(b.argEnum(ScopeType.class)))
+                .then(b.arg("scopeSlownessAmplifier")
+                        .then(b.argPosInt("amplifier")))
+                .then(b.arg("sneakUncertaintyMultiplier")
+                        .then(b.argPosDecimal("multiplier")))
+                .then(b.arg("roundsPerShot")
+                        .then(b.argPosInt("count"))));
     }
 }

@@ -15,10 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public final class Guns extends JavaPlugin {
 
     public static final GunPresets gunPresets = JsonSerializable.load(GunPresets.PATH, GunPresets.class, new GunPresets());
@@ -74,9 +70,5 @@ public final class Guns extends JavaPlugin {
         GunNBT nbt = new GunNBT();
         nbt.updateItemMeta(item);
         return true;
-    }
-
-    public static List<String> enumNames(Class<? extends Enum<?>> e) {
-        return new ArrayList<>(Arrays.stream(e.getEnumConstants()).map(v -> v.name().toLowerCase()).toList());
     }
 }

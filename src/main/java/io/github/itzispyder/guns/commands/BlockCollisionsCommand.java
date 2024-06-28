@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Player;
@@ -21,7 +22,7 @@ import org.bukkit.util.VoxelShape;
 public class BlockCollisionsCommand implements CustomCommand {
 
     @Override
-    public void dispatchCommand(CommandSender sender, Args args) {
+    public void dispatchCommand(CommandSender sender, Command command, String s, Args args) {
         Player p = (Player) sender;
         Block block = p.getTargetBlockExact(5);
 
@@ -40,7 +41,7 @@ public class BlockCollisionsCommand implements CustomCommand {
     }
 
     @Override
-    public void dispatchCompletions(CompletionBuilder b) {
+    public void dispatchCompletions(CommandSender sender, Command command, String s, CompletionBuilder b) {
 
     }
 
