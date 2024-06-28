@@ -179,9 +179,9 @@ public class GunsCommand implements CustomCommand {
                             }
                             case "glowColor" -> {
                                 int hex = Integer.parseUnsignedInt(args.get(4).toString().substring(1), 16);
-                                int r = hex >> 24 & 0xFF;
-                                int g = hex >> 16 & 0xFF;
-                                int b = hex >> 8 & 0xFF;
+                                int r = hex >> 16 & 0xFF;
+                                int g = hex >> 8 & 0xFF;
+                                int b = hex & 0xFF;
                                 gun.ballistics.glowColor = Color.fromRGB(r, g, b);
                                 info(sender, "Set ballistics &7%s&r to &7%s&r".formatted(args.get(3), args.get(4)));
                             }
@@ -301,9 +301,9 @@ public class GunsCommand implements CustomCommand {
                             }
                             case "dust" -> {
                                 int hex = Integer.parseUnsignedInt(args.get(6).toString().substring(1), 16);
-                                int r = hex >> 24 & 0xFF;
-                                int g = hex >> 16 & 0xFF;
-                                int b = hex >> 8 & 0xFF;
+                                int r = hex >> 16 & 0xFF;
+                                int g = hex >> 8 & 0xFF;
+                                int b = hex & 0xFF;
                                 Color color = Color.fromRGB(r, g, b);
                                 float size = args.get(7).toFloat();
                                 particle.dust = new Particle.DustOptions(color, size);
