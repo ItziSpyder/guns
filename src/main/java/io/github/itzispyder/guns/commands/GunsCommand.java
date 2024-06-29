@@ -10,6 +10,7 @@ import io.github.itzispyder.pdk.commands.completions.CompletionBuilder;
 import io.github.itzispyder.pdk.utils.StringUtils;
 import io.github.itzispyder.pdk.utils.misc.config.JsonSerializable;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -20,7 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-@CommandRegistry(value = "guns", printStackTrace = true, playersOnly = true, usage = "/guns <action>")
+@CommandRegistry(value = "guns", playersOnly = true, usage = "/guns <action>")
 public class GunsCommand implements CustomCommand {
 
     @Override
@@ -194,6 +195,20 @@ public class GunsCommand implements CustomCommand {
                     }
                     default -> error(sender, "Unknown raycast mode");
                 }
+            }
+
+            case "blockDisplay" -> {
+                gun.blockDisplay = args.get(2).toEnum(Material.class, gun.blockDisplay);
+                if (gun.blockDisplay == null || !gun.blockDisplay.isBlock()) {
+                    gun.blockDisplay = Material.WHITE_CONCRETE;
+                    error(sender, "Please choose a valid block type!");
+                    return;
+                }
+                info(sender, "Set gun's &7%s&r to &7%s&r".formatted(args.get(1), args.get(2)));
+            }
+            case "disableShells" -> {
+                gun.disableShells = args.get(2).toBool();
+                info(sender, "Set gun's &7%s&r to &7%s&r".formatted(args.get(1), args.get(2)));
             }
 
             case "scopeType" -> {
@@ -390,6 +405,10 @@ public class GunsCommand implements CustomCommand {
                         .then(b.argPosInt("count")))
                 .then(b.arg("repetitionPeriod")
                         .then(b.argPosInt("ticks")))
+                .then(b.arg("blockDisplay")
+                        .then(b.argEnum(Material.class)))
+                .then(b.arg("disableShells")
+                        .then(b.argBool()))
                 .then(b.arg("scopeType")
                         .then(b.argEnum(ScopeType.class)))
                 .then(b.arg("scopeSlownessAmplifier")

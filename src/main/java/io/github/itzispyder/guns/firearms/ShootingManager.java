@@ -2,10 +2,8 @@ package io.github.itzispyder.guns.firearms;
 
 import io.github.itzispyder.guns.Guns;
 import io.github.itzispyder.guns.commands.BlockCollisionsCommand;
-import io.github.itzispyder.guns.firearms.nbt.BallisticsMode;
 import io.github.itzispyder.guns.firearms.nbt.Event;
 import io.github.itzispyder.guns.firearms.nbt.GunNBT;
-import io.github.itzispyder.guns.firearms.nbt.HitscanMode;
 import io.github.itzispyder.guns.firearms.scopes.Scope;
 import io.github.itzispyder.pdk.utils.SchedulerUtils;
 import io.github.itzispyder.pdk.utils.misc.Randomizer;
@@ -14,7 +12,6 @@ import io.github.itzispyder.pdk.utils.raytracers.BlockDisplayRaytracer;
 import io.github.itzispyder.pdk.utils.raytracers.CustomDisplayRaytracer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.BlockDisplay;
@@ -78,39 +75,41 @@ public class ShootingManager {
         }
     }
 
-    public static CustomDisplayRaytracer.Point shootHitscan(LivingEntity shooter, double maxUncertainty, HitscanMode mode, double damage) {
+    public static CustomDisplayRaytracer.Point shootHitscan(LivingEntity shooter, GunNBT gun) {
         Vector dir = shooter.getLocation().getDirection();
         Location eye = CustomDisplayRaytracer.blocksInFrontOf(shooter.getEyeLocation(), dir, 0.1, true).getLoc();
         Randomizer r = new Randomizer();
+        double uncertainty = !shooter.isSneaking() ? gun.maxUncertainty : gun.maxUncertainty * gun.sneakUncertaintyMultiplier;
 
-        double x = r.getRandomDouble(-maxUncertainty, maxUncertainty);
-        double y = r.getRandomDouble(-maxUncertainty, maxUncertainty);
-        double z = r.getRandomDouble(-maxUncertainty, maxUncertainty);
+        double x = r.getRandomDouble(-uncertainty, uncertainty);
+        double y = r.getRandomDouble(-uncertainty, uncertainty);
+        double z = r.getRandomDouble(-uncertainty, uncertainty);
         dir.add(new Vector(x, y, z));
 
-        var hit = CustomDisplayRaytracer.trace(eye, dir, mode.distance, 0.1, point -> {
+        var hit = CustomDisplayRaytracer.trace(eye, dir, gun.hitscan.distance, 0.1, point -> {
             AtomicBoolean target = new AtomicBoolean(false);
             point.getNearbyEntities(shooter, 5, true, 0.2, ent -> {
                 return ent instanceof LivingEntity && !ent.isDead() && !(ent instanceof ArmorStand);
             }).forEach(ent -> {
                 target.set(true);
-                damage((LivingEntity) ent, shooter, damage);
+                damage((LivingEntity) ent, shooter, gun.damage);
             });
             return target.get() || BlockCollisionsCommand.collidesWidth(point.getBlock(), point.getLoc());
         });
-        BlockDisplayRaytracer.trace(Material.WHITE_CONCRETE, eye, hit.getLoc(), 0.0069, 3);
+        BlockDisplayRaytracer.trace(gun.getDisplay(), eye, hit.getLoc(), 0.0069, 3);
         return hit;
     }
 
-    public static void shootBallistics(LivingEntity shooter, double maxUncertainty, BallisticsMode mode, double damage, Event onImpact) {
+    public static void shootBallistics(LivingEntity shooter, GunNBT gun) {
         World world = shooter.getWorld();
         Vector dir = shooter.getLocation().getDirection();
         Location eye = shooter.getEyeLocation();
         Randomizer r = new Randomizer();
+        double uncertainty = !shooter.isSneaking() ? gun.maxUncertainty : gun.maxUncertainty * gun.sneakUncertaintyMultiplier;
 
-        double x = r.getRandomDouble(-maxUncertainty, maxUncertainty);
-        double y = r.getRandomDouble(-maxUncertainty, maxUncertainty);
-        double z = r.getRandomDouble(-maxUncertainty, maxUncertainty);
+        double x = r.getRandomDouble(-uncertainty, uncertainty);
+        double y = r.getRandomDouble(-uncertainty, uncertainty);
+        double z = r.getRandomDouble(-uncertainty, uncertainty);
         dir.add(new Vector(x, y, z));
 
         float thickness = 0.0625F; // one block pixel
@@ -125,9 +124,9 @@ public class ShootingManager {
         Location teleport = block.getLocation();
         teleport.setDirection(dir);
         block.teleport(teleport);
-        block.setBlock(Material.CYAN_CONCRETE.createBlockData());
-        block.setGlowColorOverride(mode.glowColor);
-        block.setGlowing(mode.glowing);
+        block.setBlock(gun.getDisplay().createBlockData());
+        block.setGlowColorOverride(gun.ballistics.glowColor);
+        block.setGlowing(gun.ballistics.glowing);
         block.setInterpolationDelay(0);
         block.setTransformation(new Transformation(translation, angle, scale, angle));
 
@@ -155,12 +154,12 @@ public class ShootingManager {
         SchedulerUtils.whileLoop(1, canTravel::get, i -> {
             if (i >= maxDistance) {
                 canTravel.set(false);
-                boltTravel(shooter, stand, block, damage, mode, onImpact);
+                boltTravel(shooter, stand, block, gun);
                 stand.remove();
                 block.remove();
                 return;
             }
-            canTravel.set(boltTravel(shooter, stand, block, damage, mode, onImpact));
+            canTravel.set(boltTravel(shooter, stand, block, gun));
         });
     }
 
@@ -190,11 +189,11 @@ public class ShootingManager {
         target.setMaximumNoDamageTicks(maxTick);
     }
 
-    private static boolean boltTravel(LivingEntity shooter, ArmorStand base, BlockDisplay bolt, double damage, BallisticsMode mode, Event impact) {
-        double delta = mode.blocksPerTick;
+    private static boolean boltTravel(LivingEntity shooter, ArmorStand base, BlockDisplay bolt, GunNBT gun) {
+        double delta = gun.ballistics.blocksPerTick;
 
         Location loc = bolt.getLocation();
-        loc.setPitch((float)(loc.getPitch() + mode.bulletDropPerTick));
+        loc.setPitch((float)(loc.getPitch() + gun.ballistics.bulletDropPerTick));
         Vector dir = loc.getDirection().normalize();
         Location teleport = loc.clone().add(dir.multiply(delta));
 
@@ -211,11 +210,11 @@ public class ShootingManager {
                 return ent instanceof LivingEntity && !ent.isDead() && !(ent instanceof ArmorStand);
             }).forEach(ent -> {
                 target.set(true);
-                damage((LivingEntity) ent, shooter, damage);
+                damage((LivingEntity) ent, shooter, gun.damage);
             });
 
             if (target.get() || CustomDisplayRaytracer.HIT_BLOCK.test(point)) {
-                impact.trigger(point.getLoc());
+                gun.impact.trigger(point.getLoc());
                 bolt.remove();
                 base.remove();
                 return false;

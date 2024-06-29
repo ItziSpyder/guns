@@ -12,7 +12,7 @@ jar {
 }
 
 group = 'io.github.itzispyder'
-version = '0.0.5'
+version = project.plugin_version
 
 repositories {
     mavenCentral()

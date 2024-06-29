@@ -28,6 +28,9 @@ public class GunNBT implements PersistentDataSerializable {
     public BallisticsMode ballistics;
     public RaycastMode raycastMode;
 
+    public boolean disableShells;
+    public Material blockDisplay;
+
     public ScopeType scopeType;
     public int scopeSlownessAmplifier;
 
@@ -108,21 +111,25 @@ public class GunNBT implements PersistentDataSerializable {
         updateItemMeta(item);
 
         Location[] results = new Location[roundsPerShot];
-        double uncertainty = !player.isSneaking() ? maxUncertainty : maxUncertainty * sneakUncertaintyMultiplier;
         boolean instant = raycastMode.isInstant();
 
         if (!instant)
             fire.trigger(CustomDisplayRaytracer.blocksInFrontOf(player.getEyeLocation(), player.getLocation().getDirection(), 0.1, false).getLoc());
         for (int i = 0; i < roundsPerShot; i++) {
             switch (raycastMode) {
-                case HITSCAN -> results[i] = ShootingManager.shootHitscan(player, uncertainty, hitscan, damage).getLoc();
-                case BALLISTICS -> ShootingManager.shootBallistics(player, uncertainty, ballistics, damage, impact);
+                case HITSCAN -> results[i] = ShootingManager.shootHitscan(player, this).getLoc();
+                case BALLISTICS -> ShootingManager.shootBallistics(player, this);
             }
         }
         if (instant)
             ShootingManager.playSound(player, fire, impact, results);
         sendActionBar(player);
 
+        if (!disableShells)
+            ejectShell(player);
+    }
+
+    private void ejectShell(Player player) {
         player.getWorld().spawn(player.getLocation().add(0, 1, 0), Item.class, ent -> {
             ent.setItemStack(new ItemStack(Material.IRON_NUGGET));
             ent.setCanMobPickup(false);
@@ -159,6 +166,10 @@ public class GunNBT implements PersistentDataSerializable {
 
     public boolean hasScope() {
         return scopeType != null && scopeType != ScopeType.NONE;
+    }
+
+    public Material getDisplay() {
+        return blockDisplay != null ? blockDisplay : Material.WHITE_CONCRETE;
     }
 
     public void sendActionBar(Player player) {
