@@ -20,7 +20,7 @@ public class PlayerEventListener implements CustomListener {
 
     public void onRightClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        ItemStack item = p.getInventory().getItemInMainHand();
+        ItemStack item = e.getItem();
         GunNBT gun = Guns.getGun(item);
 
         if (gun == null)
@@ -32,7 +32,7 @@ public class PlayerEventListener implements CustomListener {
 
     public void onLeftClick(PlayerInteractEvent e) {
         Player p = e.getPlayer();
-        ItemStack item = p.getInventory().getItemInMainHand();
+        ItemStack item = e.getItem();
         GunNBT gun = Guns.getGun(item);
 
         if (gun == null)
