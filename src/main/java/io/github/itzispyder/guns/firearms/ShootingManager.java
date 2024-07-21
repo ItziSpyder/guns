@@ -170,7 +170,7 @@ public class ShootingManager {
 
         for (Location hitResult : hitResults)
             if (hitResult != null)
-                impactEvent.trigger(sp, hitResult);
+                impactEvent.trigger(hitResult);
     }
 
     public static synchronized void damage(LivingEntity target, LivingEntity attacker, double amount) {

@@ -1,0 +1,10 @@
+
+
+game:
+  quit-messages: false
+
+chat-to-action-bar:
+  quit-messages: true
+  join-messages: true
+  kill-messages: true
+

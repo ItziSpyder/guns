@@ -4,6 +4,7 @@ import io.github.itzispyder.guns.commands.BlockCollisionsCommand;
 import io.github.itzispyder.guns.commands.GunsCommand;
 import io.github.itzispyder.guns.data.PersistentData;
 import io.github.itzispyder.guns.events.PlayerEventListener;
+import io.github.itzispyder.guns.events.ServerEventListener;
 import io.github.itzispyder.guns.firearms.GunPresets;
 import io.github.itzispyder.guns.firearms.ShootingManager;
 import io.github.itzispyder.guns.firearms.nbt.GunNBT;
@@ -34,10 +35,14 @@ public final class Guns extends JavaPlugin {
         gunPresets.presets.put("blaster-rifle", new BlasterRifleNBT());
         gunPresets.save();
 
+        this.getConfig().options().copyDefaults(true);
+        this.saveDefaultConfig();
+
         new GunsCommand().register();
         new BlockCollisionsCommand().register();
 
         new PlayerEventListener().register();
+        new ServerEventListener().register();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, ShootingManager::onTick, 0, 1);
     }
