@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class GunNBT implements PersistentDataSerializable {
     public BallisticsMode ballistics;
     public RaycastMode raycastMode;
 
-    public boolean disableShells;
+    public boolean disableShells, easterEgg;
     public Material blockDisplay;
 
     public ScopeType scopeType;
@@ -125,6 +127,8 @@ public class GunNBT implements PersistentDataSerializable {
             ShootingManager.playSound(player, fire, impact, results);
         sendActionBar(player);
 
+        if (easterEgg)
+            easterEgg(player);
         if (!disableShells)
             ejectShell(player);
     }
@@ -174,5 +178,30 @@ public class GunNBT implements PersistentDataSerializable {
 
     public void sendActionBar(Player player) {
         ServerUtils.sendActionBar(player, "§8<< §e%s§7/%s §8>>".formatted(ammo, maxAmmo));
+    }
+
+    public void easterEgg(Player player) {
+        World world = player.getWorld();
+        Location eyes = player.getEyeLocation();
+        Location loc = player.getLocation();
+        Particle.DustOptions dust = new Particle.DustOptions(Color.WHITE, 0.69420F);
+
+        Quaternionf qPitch = new Quaternionf().rotationX((float)Math.toRadians(loc.getPitch()));
+        Quaternionf qYaw = new Quaternionf().rotationY(-(float)Math.toRadians(loc.getYaw()));
+        Quaternionf rotation = qYaw.mul(qPitch);
+
+        float radius = 0.4F;
+        float angle = 0.0F;
+
+        for (float dist = 0; dist < hitscan.distance; dist += 0.1F) {
+            float sin = (float) Math.sin(Math.toRadians(angle));
+            float cos = (float) Math.cos(Math.toRadians(angle));
+            angle += 20.0F;
+
+            Vector3f vertex = new Vector3f(cos * radius, sin * radius, dist);
+            vertex = rotation.transform(vertex).add(eyes.toVector().toVector3f());
+            Location newLoc = new Location(world, vertex.x, vertex.y, vertex.z);
+            world.spawnParticle(Particle.REDSTONE, newLoc, 1, 0, 0, 0, 0, dust);
+        }
     }
 }

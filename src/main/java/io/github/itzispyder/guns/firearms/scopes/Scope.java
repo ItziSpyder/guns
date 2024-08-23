@@ -75,9 +75,9 @@ public abstract class Scope {
     protected Vector rotVec(Vector vec, float pitch, float yaw, Vector origin) {
         float x = (float)Math.toRadians(pitch);
         float y = (float)Math.toRadians(yaw);
-        Quaternionf rotationYaw = new Quaternionf().rotationX(x);
-        Quaternionf rotationPitch = new Quaternionf().rotationY(y);
-        Quaternionf rotation = rotationPitch.mul(rotationYaw);
+        Quaternionf rotationPitch = new Quaternionf().rotationX(x);
+        Quaternionf rotationYaw = new Quaternionf().rotationY(y);
+        Quaternionf rotation = rotationYaw.mul(rotationPitch);
         Vector3f trans = vec.subtract(origin).toVector3f();
 
         trans = rotation.transform(trans).add(origin.toVector3f());

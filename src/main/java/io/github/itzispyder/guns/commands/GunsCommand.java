@@ -1,5 +1,6 @@
 package io.github.itzispyder.guns.commands;
 
+import com.google.gson.Gson;
 import io.github.itzispyder.guns.Guns;
 import io.github.itzispyder.guns.firearms.nbt.*;
 import io.github.itzispyder.guns.firearms.scopes.ScopeType;
@@ -122,7 +123,7 @@ public class GunsCommand implements CustomCommand {
                 return;
             }
             GunNBT gun = Guns.getGun(item);
-            String json = JsonSerializable.gson.toJson(gun);
+            String json = new Gson().toJson(gun);
             info(sender, "This gun has the following NBT data: &7%s".formatted(json));
             return;
         }
@@ -208,6 +209,10 @@ public class GunsCommand implements CustomCommand {
             }
             case "disableShells" -> {
                 gun.disableShells = args.get(2).toBool();
+                info(sender, "Set gun's &7%s&r to &7%s&r".formatted(args.get(1), args.get(2)));
+            }
+            case "easterEgg" -> {
+                gun.easterEgg = args.get(2).toBool();
                 info(sender, "Set gun's &7%s&r to &7%s&r".formatted(args.get(1), args.get(2)));
             }
 
@@ -408,6 +413,8 @@ public class GunsCommand implements CustomCommand {
                 .then(b.arg("blockDisplay")
                         .then(b.argEnum(Material.class)))
                 .then(b.arg("disableShells")
+                        .then(b.argBool()))
+                .then(b.arg("easterEgg")
                         .then(b.argBool()))
                 .then(b.arg("scopeType")
                         .then(b.argEnum(ScopeType.class)))

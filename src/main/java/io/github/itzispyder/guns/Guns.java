@@ -33,6 +33,7 @@ public final class Guns extends JavaPlugin {
         gunPresets.presets.put("rifle", new RifleNBT());
         gunPresets.presets.put("blaster", new BlasterNBT());
         gunPresets.presets.put("blaster-rifle", new BlasterRifleNBT());
+        gunPresets.presets.put("rpg", new RpgNBT());
         gunPresets.save();
 
         this.getConfig().options().copyDefaults(true);
